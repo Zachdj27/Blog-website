@@ -4,7 +4,7 @@ from os import path
 from flask_login import LoginManager
 
 def create_app():
-    app - Flask(__name__)
+    app = Flask(__name__)
     app.config['SECRET_KEY'] = "secretpassword"
     
     return app
