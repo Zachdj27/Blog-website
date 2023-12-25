@@ -10,15 +10,16 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="{{ url_for('static', filename='/logo.png') }}"
+          <img src="{{ url_for('static', filename='images/logo.png') }}"
           alt="logo" width="40" height="40"/>
-          Pinguin
+          Penguin
         </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
