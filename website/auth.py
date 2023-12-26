@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from . import db 
 from .models import User
+from flask_login import login_user, logout_user, login_required
+from werkzeug.security import
 
 
 auth = Blueprint("auth", __name__)
@@ -32,9 +34,16 @@ def sign_up():
             flash("Username must be at least 3 characters long", category='error')
         elif len(password1) < 6:
             flash("Password must be at least 6 characters long", category='error')
-            
-            
-    
+        elif len(email) < 4:
+            flash("Email is invalid", category='error')
+        else:
+            #if user account is valid then add user to database
+            new_user = User(email=email, username=username, password=password1)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Account created!")
+            return redirect(url_for('views.home'))
+               
     return render_template("signup.html")
 
 @auth.route("/logout")
