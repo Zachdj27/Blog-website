@@ -1,6 +1,13 @@
 {% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?fami
+ly=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?famil
+y=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+{% endblock %}
 {% block title %}{% endblock %}
 {% block content %}
+<div class="container-fluid" style="max-width:700px">
 <h1 align="center">{% block header %}Posts{% endblock %}</h1>
 <div id="posts">
     {% for post in posts %}
@@ -8,20 +15,34 @@
         <div class="card-header d-flex justify-content-between align-items-center"> <!--For likes and comments-->
             <!--when you click on uername, it will redirect you that user's account-->
             <a href="/posts/{{post.user.username}}">{{post.user.username}} </a>
+            <div>
+                {{post.likes|length}}
+                <a href="like-post/{{post.id}}>"<span class="material-symbols-outlined">thumb_up</span></a>
             {% if user.id == post.author %}
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown"></button>
+                <button
+                type="button"
+                class="btn btn-sm btn-dark dropdown-toggle"
+                data-bs-toggle="dropdown">
+                </button>
                 <ul class="dropdown-menu">
-                    <li><a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a></li>
+                    <li>
+                      <a href="/delete-post/{{post.id}}" style="color:#212529">
+                         <span class="material-symbols-outlined">delete</span>
+                         <span style="color:#212529">Delete<span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             {% endif %}
+          </div>
         </div>
         <div class= "card-body">
+            <div>
             <div class="card-text">{{post.text}}</div>
             <br/>
             <!--added post.id to only collapse the comments for that one post-->
-            <div id="comment-{{post.id}}">
+            <div class="collapse" id="comment-{{post.id}}">
                 <div class="card">
                     <div class="card-body" id="comment-expanded-{{post.id}}">
                     {% for comment in post.comments %}
@@ -33,11 +54,29 @@
                         </div>
                         <div>
                             <small class="text-muted">{{comment.date_created}}</small>
+                            {% if user.id == comment.author or user.id == post.author %}
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown"></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/delete-comment/{{comment.id}}" class="dropdown-item" style="color:">Delete</a></li>
+                                    </ul>
+                                </div>
+                            {% endif %}
                         </div>
+                    </div>
                     {% endfor %}
                     </div>
                 </div>
             </div>
+            <p class="card-text">
+                {% if post.comments|length > 0 %}
+                <a data-bs-toggle="collapse" href="#comment-{{post.id}}" role="button">
+                    <small>View {{post.comments|length}} Comments</small>
+                </a>
+                {% else %}
+                <small class="text-muted">No Comments Yet</small>
+                {% endif %}
+            </p>
             <form class="input-group mb-3" method="POST" action="/create-comment/{{post.id}}">
                 <input type="text" id="text" name="text" class="form-control" placeholder="Add a Comment Here"/>
                 <button type="submit" class="btn btn-dark">Comment</button>
@@ -53,6 +92,7 @@
     <a href="/create-post">
         <button type="button" class="btn btn-primary btn-lg">Create a Post</button>
     </a>
+</div>
 </div>
 {% endblock %}
 {% endblock %}
