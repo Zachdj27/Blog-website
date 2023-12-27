@@ -9,8 +9,11 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())#date of account creation
-    posts = db.relationship("Post", backref="user", passive_deletes=True)
     #reference all posts that a user has, backref: access posts with Post.user, passive_deletes: allows all posts of user to be deleted
+    posts = db.relationship("Post", backref="user", passive_deletes=True)
+    comments = db.relationship("Comment", backref="user", passive_deletes=True)
+    
+    
     
  #model for posts
  
@@ -20,3 +23,11 @@ class Post(db.Model):
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())#date of account creation
     author = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False) #accessing User.id
         #CASCADE: delete all posts user has when his account is deleted
+    comments = db.relationship("Comment", backref="post", passive_deletes=True)
+        
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text =  db.Column(db.String(200), nullable=False)
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+    author = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id", ondelete="CASCADE"), nullable=False)
