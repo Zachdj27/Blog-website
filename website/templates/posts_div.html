@@ -20,6 +20,19 @@
         <div class= "card-body">
             <div class="card-text">{{post.text}}</div>
             <br/>
+            <!--added post.id to only collapse the comments for that one post-->>
+            <div class="collapse" id="comment-{{post.id}}">
+                <div class="card">
+                    <div class="card-body" id="comment-expanded-{{post.id}}">
+                    {% for comment in post.comments %}
+                    <!--these classes are for the delete button-->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="/post/{{comment.user.username}}">{{comment.user.username}}
+                        </a>:{{comment.text}}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             <form class="input-group mb-3" method="POST" action="/create-comment/{{post.id}}">
                 <input type="text" id="text" name="text" class="form-control" placeholder="Add a Comment Here"/>
                 <button type="submit" class="btn btn-dark">Comment</button>

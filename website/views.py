@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from .models import Post, User
+from .models import Post, User, Comment
 from . import db
 
 
@@ -59,3 +59,22 @@ def posts(username):
 
     posts = user.posts
     return render_template("posts.html", user=current_user, posts=posts, username=username)
+
+@views.route("/create-comment/<post_id>", methods=['POST'])
+@login_required
+def create_comment(post_id):
+    text = request.form.get('text')
+    
+    if not text:
+        flash("A comment cannot be empty.", category='error')
+    else:
+        post = Post.query.filter_by(id=post_id)
+        if not post:
+            flash("Post does not exist", category='error')
+        else:
+            comment = Comment(text=text,author=current_user.id,post_id=post_id)
+            db.session.add(comment)
+            db.session.commit()
+            flash("Comment posted", category="success")    
+    return redirect(url_for("views.home"))
+    
