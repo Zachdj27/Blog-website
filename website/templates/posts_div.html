@@ -12,35 +12,26 @@ crossorigin="anonymous"></script>
     <div class="card border-secondary">
         <div class="card-header d-flex justify-content-between align-items-center"> <!--For likes and comments-->
             <!--when you click on uername, it will redirect you that user's account-->
-            <a href="/posts/{{post.user.username}}">{{post.user.username}} </a>
+            <a href="/posts/{{post.user.username}}" style="text-decoration:none; color:#212529;">{{post.user.username}} </a>
             <div>
                 {{post.likes|length}}
     
                 <!--Check if current user has like post-->
                 <!--fill like button if the user likes-->
                 {% if user.id in post.likes|map(attribute = "author")|list %}
-                   <a href="/like-post/{{post.id}}"> 
+                   <a href="/like-post/{{post.id}}" style="color: #FF7F2A;"> 
                     <i class="fa-solid fa-heart"></i></a>
                 {% else %}
                     <a href="/like-post/{{post.id}}"> 
-                     <i class="fa-regular fa-heart"></i></a>
+                     <i class="fa-regular fa-heart" style="color: #212529;"></i></a>
                 {% endif %}            
-            {% if user.id == post.author %}
-            <div class="btn-group">
-                <button
-                type="button"
-                class="btn btn-sm btn-dark dropdown-toggle"
-                data-bs-toggle="dropdown">
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                      <a href="/delete-post/{{post.id}}" style="color:#212529">
-                         <span class="material-symbols-outlined">delete</span>
-                         <span style="color:#212529">Delete<span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                {% if user.id == post.author %}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown"></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a></li>
+                    </ul>
+                </div>
             {% endif %}
           </div>
         </div>
@@ -65,7 +56,7 @@ crossorigin="anonymous"></script>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-dark dropdown-toggle" data-bs-toggle="dropdown"></button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="/delete-comment/{{comment.id}}" class="dropdown-item" style="color:">Delete</a></li>
+                                        <li><a href="/delete-comment/{{comment.id}}" class="dropdown-item">Delete</a></li>
                                     </ul>
                                 </div>
                             {% endif %}
@@ -90,6 +81,7 @@ crossorigin="anonymous"></script>
             </form>
         </div>
             <div class="card-footer text-muted">{{post.date_created}}</div>
+        </div>
         </div>
         <br/>
     {% endfor %}
