@@ -54,7 +54,12 @@ You can use the app on http://zachdjerdjou.pythonanywhere.com/
 - CSS
 
 ## What The App Looks Like
+![](screenshots_scmedia/homepage.png)
 
-https://github.com/Zachdj27/Social-media-webapp/blob/main/screenshots_scmedia/homepage.png
+![](screenshots_scmedia/signup.png)
+
+![](screenshots_scmedia/login.png)
+
+
 
 
